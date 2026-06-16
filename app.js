@@ -9,13 +9,14 @@ import {
   collection,
   addDoc,
   query,
+  where,
+  getDocs,
   orderBy,
   limit,
   onSnapshot,
+  deleteDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
-alert("app.js 실행됨");
 
 const firebaseConfig = {
   apiKey: "AIzaSyCwTMsX9hJnBBPbNOArjDrXdZ84RtPokIE",
@@ -42,6 +43,12 @@ const chatInput = document.getElementById("chatInput");
 const sendChatBtn = document.getElementById("sendChatBtn");
 const vapeSound = document.getElementById("vapeSound");
 
+let userId = localStorage.getItem("userId");
+
+if (!userId) {
+  userId = crypto.randomUUID();
+  localStorage.setItem("userId", userId);
+}
 let nickname = localStorage.getItem("nickname") || "익명";
 currentName.textContent = nickname;
 
@@ -87,18 +94,38 @@ function cleanText(text) {
   return result.trim();
 }
 
-saveNameBtn.addEventListener("click", () => {
-  const name = nicknameInput.value.trim();
+saveNameBtn.addEventListener("click", async () => {
+  const name = cleanText(nicknameInput.value.trim()).slice(0, 12);
 
   if (name.length < 2) {
     alert("닉네임은 2글자 이상");
     return;
   }
 
-  nickname = cleanText(name).slice(0, 12);
+  const q = query(collection(db, "ranking"), where("name", "==", name));
+  const snap = await getDocs(q);
+
+  let duplicated = false;
+
+  snap.forEach(docSnap => {
+    if (docSnap.id !== userId) duplicated = true;
+  });
+
+  if (duplicated) {
+    alert("이미 사용 중인 닉네임이야");
+    return;
+  }
+
+  nickname = name;
   localStorage.setItem("nickname", nickname);
   currentName.textContent = nickname;
   nicknameInput.value = "";
+
+  await setDoc(doc(db, "ranking", userId), {
+    name: nickname,
+    count: 0,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
 });
 
 let isHolding = false;
@@ -135,7 +162,7 @@ vapeBtn.addEventListener("pointerup", async () => {
   showMistParticles(particleCount);
 
   const counterRef = doc(db, "site", "counter");
-  const userRef = doc(db, "ranking", nickname);
+  const userRef = doc(db, "ranking", userId);
 
   await setDoc(counterRef, { total: increment(1) }, { merge: true });
 
@@ -191,17 +218,25 @@ onSnapshot(rankingQuery, (snapshot) => {
   });
 });
 
-async function sendChat() {
-  const raw = chatInput.value.trim();
-  if (!raw) return;
+let lastChatTime = 0;
+async function sendChat(const raw = chatInput.value.trim();) {
+  const now = Date.now();
+
+if (now - lastChatTime < 3000) {
+  alert("채팅은 3초에 한 번만 가능");
+  return;
+}
+
+lastChatTime = now;
 
   const msg = cleanText(raw).slice(0, 80);
 
   await addDoc(collection(db, "chats"), {
-    name: nickname,
-    message: msg,
-    createdAt: serverTimestamp()
-  });
+  userId: userId,
+  name: nickname,
+  message: msg,
+  createdAt: serverTimestamp()
+});
 
   chatInput.value = "";
 }
