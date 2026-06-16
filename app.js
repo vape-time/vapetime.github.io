@@ -16,13 +16,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC_m_O-ffenAYD9ioN8GTSevgG7_nOdu8A",
-  authDomain: "vape-time-820c9.firebaseapp.com",
-  projectId: "vape-time-820c9",
-  storageBucket: "vape-time-820c9.firebasestorage.app",
-  messagingSenderId: "1031697747260",
-  appId: "1:1031697747260:web:23c56a05585efde97ba239",
-  measurementId: "G-9RZRDQQ5KC"
+  apiKey: "AIzaSyCwTMsX9hJnBBPbNOArjDrXdZ84RtPokIE",
+  authDomain: "vape-time-cb199.firebaseapp.com",
+  projectId: "vape-time-cb199",
+  storageBucket: "vape-time-cb199.firebasestorage.app",
+  messagingSenderId: "329958219626",
+  appId: "1:329958219626:web:d974e50e01427def9f0f13",
+  measurementId: "G-80848Z5Y4Y"
 };
 
 const app = initializeApp(firebaseConfig);
