@@ -219,12 +219,30 @@ onSnapshot(rankingQuery, (snapshot) => {
 });
 
 let lastChatTime = 0;
-async function sendChat(const raw = chatInput.value.trim();) {
+async function sendChat() {
+  const raw = chatInput.value.trim();
+
+  if (!raw) return;
+
   const now = Date.now();
 
-if (now - lastChatTime < 3000) {
-  alert("채팅은 3초에 한 번만 가능");
-  return;
+  if (now - lastChatTime < 3000) {
+    alert("채팅은 3초에 한 번만 가능");
+    return;
+  }
+
+  lastChatTime = now;
+
+  const msg = cleanText(raw).slice(0, 80);
+
+  await addDoc(collection(db, "chats"), {
+    userId: userId,
+    name: nickname,
+    message: msg,
+    createdAt: serverTimestamp()
+  });
+
+  chatInput.value = "";
 }
 
 lastChatTime = now;
