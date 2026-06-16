@@ -99,13 +99,75 @@ saveNameBtn.addEventListener("click", () => {
   nicknameInput.value = "";
 });
 
-vapeBtn.addEventListener("click", async () => {
+let isHolding = false;
+let holdStart = 0;
+
+vapeBtn.addEventListener("pointerdown", () => {
+  isHolding = true;
+  holdStart = Date.now();
+
   led.classList.add("active");
-  document.querySelectorAll(".smoke").forEach(s => {
-    s.classList.remove("show");
-    void s.offsetWidth;
-    s.classList.add("show");
-  });
+  vapeBtn.classList.add("pressed");
+
+  try {
+    vapeSound.currentTime = 0;
+    vapeSound.play();
+  } catch {}
+});
+
+vapeBtn.addEventListener("pointerup", async () => {
+  if (!isHolding) return;
+
+  isHolding = false;
+  led.classList.remove("active");
+  vapeBtn.classList.remove("pressed");
+
+  const holdTime = Date.now() - holdStart;
+
+  if (holdTime < 400) {
+    alert("0.4초 이상 길게 눌러야 해");
+    return;
+  }
+
+  const particleCount = Math.min(Math.floor(holdTime / 250), 18);
+  showMistParticles(particleCount);
+
+  const counterRef = doc(db, "site", "counter");
+  const userRef = doc(db, "ranking", nickname);
+
+  await setDoc(counterRef, { total: increment(1) }, { merge: true });
+
+  await setDoc(userRef, {
+    name: nickname,
+    count: increment(1),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+});
+
+vapeBtn.addEventListener("pointercancel", () => {
+  isHolding = false;
+  led.classList.remove("active");
+  vapeBtn.classList.remove("pressed");
+});
+
+function showMistParticles(amount) {
+  const wrap = document.querySelector(".smoke-wrap");
+
+  for (let i = 0; i < amount; i++) {
+    const p = document.createElement("span");
+    p.className = "mist-particle";
+
+    p.style.left = `${40 + Math.random() * 20}%`;
+    p.style.animationDuration = `${1.2 + Math.random() * 1.4}s`;
+    p.style.transform = `scale(${0.7 + Math.random() * 1.4})`;
+
+    wrap.appendChild(p);
+
+    setTimeout(() => {
+      p.remove();
+    }, 3000);
+  }
+}
 
   setTimeout(() => led.classList.remove("active"), 600);
 
