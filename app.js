@@ -211,13 +211,28 @@ onSnapshot(rankingQuery, (snapshot) => {
   rankingList.innerHTML = "";
 
   let rank = 1;
+
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+
+    if (!data.name || !data.count || data.count <= 0) return;
+
     const div = document.createElement("div");
-    div.textContent = `${rank}. ${data.name} - ${data.count}회`;
+    div.className = "rank-item";
+
+    div.innerHTML = `
+      <span class="rank-num">${rank}등</span>
+      <span class="rank-name">${data.name}</span>
+      <span class="rank-count">${data.count}회</span>
+    `;
+
     rankingList.appendChild(div);
     rank++;
   });
+
+  if (rank === 1) {
+    rankingList.innerHTML = "<p>아직 랭킹이 없습니다.</p>";
+  }
 });
 
 let lastChatTime = 0;
