@@ -277,10 +277,19 @@ onSnapshot(chatQuery, (snapshot) => {
   messages.reverse();
 
   messages.forEach(data => {
-    const div = document.createElement("div");
-    div.textContent = `${data.name}: ${data.message}`;
-    chatBox.appendChild(div);
-  });
+  if (!data.createdAt) return;
+
+  const created =
+    data.createdAt.seconds
+      ? data.createdAt.seconds * 1000
+      : Date.now();
+
+  if (Date.now() - created > 180000) return;
+
+  const div = document.createElement("div");
+  div.textContent = `${data.name}: ${data.message}`;
+  chatBox.appendChild(div);
+});
 
   chatBox.scrollTop = chatBox.scrollHeight;
 });
