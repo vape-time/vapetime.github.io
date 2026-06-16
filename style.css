@@ -172,3 +172,16 @@ button{
 .vape-btn {
   touch-action: none;
 }
+.vape-btn,
+.vape-btn *,
+.vape-body,
+.vape-body span {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.vape-btn {
+  touch-action: none !important;
+}
