@@ -206,7 +206,7 @@ onSnapshot(doc(db, "site", "counter"), (snap) => {
   totalCount.textContent = snap.exists() ? snap.data().total || 0 : 0;
 });
 
-const rankingQuery = query(collection(db, "ranking"), orderBy("count", "desc"), limit(10));
+const rankingQuery = query(collection(db, "ranking"), orderBy("count", "desc"), limit(30));
 
 onSnapshot(rankingQuery, (snapshot) => {
   rankingList.innerHTML = "";
