@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vape Time</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>VAPE TIME</h1>
+      <p>닉네임으로 참여하는 실시간 타임 커뮤니티</p>
+    </header>
+
+    <section class="card center">
+      <div class="smoke-wrap">
+        <span class="smoke s1"></span>
+        <span class="smoke s2"></span>
+        <span class="smoke s3"></span>
+      </div>
+
+      <button id="vapeBtn" class="vape-btn">
+        <div class="led" id="led"></div>
+        <div class="vape-body">
+          <span>VAPE</span>
+        </div>
+      </button>
+
+      <h2><span id="totalCount">0</span> 회</h2>
+      <p>전체 카운트</p>
+
+      <input id="nicknameInput" maxlength="12" placeholder="닉네임 입력" />
+      <button id="saveNameBtn">닉네임 저장</button>
+      <p class="name">현재 닉네임: <b id="currentName">익명</b></p>
+    </section>
+
+    <section class="card">
+      <h2>🏆 랭킹</h2>
+      <div id="rankingList" class="ranking"></div>
+    </section>
+
+    <section class="card">
+      <h2>💬 채팅</h2>
+      <div id="chatBox" class="chat-box"></div>
+      <div class="chat-input">
+        <input id="chatInput" maxlength="80" placeholder="메시지 입력" />
+        <button id="sendChatBtn">전송</button>
+      </div>
+    </section>
+  </main>
+
+  <audio id="vapeSound" src="vape.mp3" preload="auto"></audio>
+
+<script type="module" src="./app.js?v=3"></script>
+</body>
+</html>
