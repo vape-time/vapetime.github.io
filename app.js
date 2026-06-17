@@ -155,6 +155,10 @@ vapeBtn.addEventListener("pointerup", async () => {
   led.classList.remove("active");
   vapeBtn.classList.remove("pressed");
 
+vapeSound.pause();
+vapeSound.currentTime = 0;
+vapeSound.loop = false;
+  
   const holdTime = Date.now() - holdStart;
 
   if (holdTime < 400) {
