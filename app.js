@@ -142,9 +142,10 @@ vapeBtn.addEventListener("pointerdown", (e) => {
   vapeBtn.classList.add("pressed");
 
   try {
-    vapeSound.currentTime = 0;
-    vapeSound.play();
-  } catch {}
+  vapeSound.loop = true;
+  vapeSound.currentTime = 0;
+  vapeSound.play();
+} catch {}
 });
 
 vapeBtn.addEventListener("pointerup", async () => {
