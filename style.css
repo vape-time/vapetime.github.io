@@ -212,3 +212,40 @@ button{
 .rank-count {
   color: #aaa;
 }
+
+.fog-layer {
+  position: fixed;
+  left: -10vw;
+  top: 10vh;
+  width: 120vw;
+  height: 60vh;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+  filter: blur(28px);
+  background:
+    radial-gradient(circle at 25% 45%, rgba(255,255,255,0.48), transparent 32%),
+    radial-gradient(circle at 45% 35%, rgba(255,255,255,0.42), transparent 35%),
+    radial-gradient(circle at 65% 50%, rgba(255,255,255,0.38), transparent 34%),
+    radial-gradient(circle at 80% 40%, rgba(255,255,255,0.32), transparent 36%);
+}
+
+.fog-layer.show {
+  animation: bigFog 3.2s ease-out forwards;
+}
+
+@keyframes bigFog {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.7);
+  }
+
+  25% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.45);
+  }
+}
