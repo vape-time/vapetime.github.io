@@ -211,7 +211,7 @@ function showMistParticles(amount) {
     const p = document.createElement("span");
     p.className = "mist-particle";
 
-    p.style.left = `${40 + Math.random() * 20}%`;
+    p.style.left = `${25 + Math.random() * 50}%`;
     p.style.animationDuration = `${1.2 + Math.random() * 1.4}s`;
     p.style.transform = `scale(${0.7 + Math.random() * 1.4})`;
 
