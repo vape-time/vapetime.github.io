@@ -225,21 +225,20 @@ function showMistParticles(amount) {
 }
 
 function showBigFog(power) {
-  fogLayer.classList.remove("show");
+  const fog = document.createElement("div");
+  fog.className = "fog-layer show";
 
   const opacity = 0.9 + power * 0.1;
-const scale = 1.25 + power * 0.7;
+  const scale = 1.25 + power * 0.7;
 
-  fogLayer.style.opacity = opacity;
-  fogLayer.style.transform = `scale(${scale})`;
+  fog.style.opacity = opacity;
+  fog.style.transform = `scale(${scale})`;
 
-  void fogLayer.offsetWidth;
-  fogLayer.classList.add("show");
+  document.body.appendChild(fog);
 
   setTimeout(() => {
-    fogLayer.classList.remove("show");
-    fogLayer.style.opacity = 0;
-  }, 3200);
+    fog.remove();
+  }, 3500);
 }
 
 onSnapshot(doc(db, "site", "counter"), (snap) => {
